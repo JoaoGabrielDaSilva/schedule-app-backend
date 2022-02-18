@@ -1,0 +1,50 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: String!
+  name: String!
+  email: String!
+  password: String!
+  profile_picture: String
+  socket_id: String
+  schedule_id: String
+}
+
+type Query {
+  getAllUsers: [User!]!
+  findOneUser(findUserInput: FindUserInput!): User!
+}
+
+input FindUserInput {
+  id: String!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  deleteUser(deleteUserInput: DeleteUserInput!): User!
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
+  profile_picture: String
+  socket_id: String
+  schedule_id: String
+}
+
+input UpdateUserInput {
+  id: String!
+  name: String
+  email: String
+  profile_picture: String
+  socket_id: String
+  schedule_id: String
+}
+
+input DeleteUserInput {
+  id: String!
+}
