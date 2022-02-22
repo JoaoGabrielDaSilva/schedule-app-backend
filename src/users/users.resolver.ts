@@ -1,4 +1,5 @@
-import { Args, InputType, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { Args, InputType, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
+import { Schedule } from 'src/schedule/schedule.entity'
 import { CreateUserInput } from './dto/create-user.input'
 import { DeleteUserInput } from './dto/delete-user.input'
 import { FindUserInput } from './dto/find-user.input'
@@ -39,5 +40,10 @@ export class UsersResolver {
     @Args('deleteUserInput') deleteUserInput: DeleteUserInput
   ): Promise<User> {
     return this.usersService.deleteUser(deleteUserInput)
+  }
+
+  @ResolveField(() => Schedule)
+  schedules(@Parent() user: User): Promise<Schedule[]> {
+    return this.usersService.getSchedules(user.id)
   }
 }

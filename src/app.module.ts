@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module'
 import { ScheduleModule } from './schedule/schedule.module'
 import { User } from './users/user.entity'
 import { Schedule } from './schedule/schedule.entity'
+import { ScheduleService } from './schedule/schedule.service'
 
 @Module({
   imports: [
@@ -25,7 +26,6 @@ import { Schedule } from './schedule/schedule.entity'
       database: 'qswpawdc',
       password: 'em8BUl4YiyiTjtcInBNnYPPXWn83XK9m'
     }),
-
     UsersModule,
     ScheduleModule,
     TypeOrmModule.forFeature([User, Schedule])

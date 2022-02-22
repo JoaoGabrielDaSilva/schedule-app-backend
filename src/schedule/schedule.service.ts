@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { forwardRef, Inject, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from 'src/users/user.entity'
 import { UsersService } from 'src/users/users.service'
@@ -12,10 +12,10 @@ export class ScheduleService {
   constructor(
     @InjectRepository(Schedule)
     private schedulesRepository: Repository<Schedule>,
-    private usersServices: UsersService
-  ) {}
+    @Inject(forwardRef(() => UsersService))
+     private usersService: UsersService) {}
 
-  async listAllSchedules(): Promise<Schedule[]> {
+  async getSchedules(): Promise<Schedule[]> {
     return this.schedulesRepository.find({ relations: ['owner'] })
   }
 
@@ -27,18 +27,18 @@ export class ScheduleService {
   }
 
   async createSchedule(input: CreateScheduleInput): Promise<Schedule> {
-    const owner = await this.usersServices.findOne({ id: input.owner_id })
+    const owner = await this.usersService.findOne({ id: input.owner_id })
 
     const schedule = this.schedulesRepository.create({ ...input, owner })
 
     return this.schedulesRepository.save(schedule)
   }
 
-  async getUsers(scheduleId: string): Promise<User[]> {
-    return this.usersServices.findAllUsersInSchedule(scheduleId)
+  async getOwner(ownerId: string): Promise<User> {
+    return this.usersService.findOne({ id: ownerId })
   }
 
-  async getOwner(ownerId: string): Promise<User | null> {
-    return this.usersServices.findOne({ id: ownerId })
+  async getUserSchedules(userId: string): Promise<Schedule[]> {
+    return this.schedulesRepository.find({where: {owner_id: userId}, relations:[ "owner"]})
   }
 }

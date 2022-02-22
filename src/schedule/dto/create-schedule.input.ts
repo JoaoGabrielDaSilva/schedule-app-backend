@@ -1,8 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { Type } from 'class-transformer'
 import { IsDate, IsRFC3339 } from 'class-validator'
-import { User } from 'src/users/user.entity'
-import { Column } from 'typeorm'
 
 @InputType()
 export class CreateScheduleInput {

@@ -2,6 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql'
 import { User } from 'src/users/user.entity'
 import {
   Column,
+  Connection,
   Entity,
   JoinColumn,
   JoinTable,
@@ -40,8 +41,7 @@ export class Schedule {
   end_hour: string
 
   @ManyToOne(() => User, user => user.schedules)
-  @Field(() => User, { nullable: true })
-  @JoinColumn()
+  @Field(() => User, {nullable: true})
   owner: User
 
   @Field({ nullable: true })

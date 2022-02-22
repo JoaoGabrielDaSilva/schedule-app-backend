@@ -1,6 +1,7 @@
-import { ConsoleLogger, Injectable, Logger } from '@nestjs/common'
+import { ConsoleLogger, forwardRef, Inject, Injectable, Logger } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Schedule } from 'src/schedule/schedule.entity'
+import { ScheduleService } from 'src/schedule/schedule.service'
 import { Repository } from 'typeorm'
 import { CreateUserInput } from './dto/create-user.input'
 import { DeleteUserInput } from './dto/delete-user.input'
@@ -11,7 +12,9 @@ import { User } from './user.entity'
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User) private usersRepository: Repository<User>
+    @InjectRepository(User) private usersRepository: Repository<User>,
+    @Inject(forwardRef(() => ScheduleService))
+    private scheduleService: ScheduleService
   ) {}
 
   async findAll(): Promise<User[]> {
@@ -24,7 +27,6 @@ export class UsersService {
 
   async createUser(createUserInput: CreateUserInput): Promise<User> {
     const newUser = this.usersRepository.create(createUserInput)
-    // newUser = []
 
     return this.usersRepository.save(newUser)
   }
@@ -52,21 +54,10 @@ export class UsersService {
     return user
   }
 
-  async findAllUsersInSchedule(scheduleId: string): Promise<User[]> {
-    const users = this.usersRepository.find({ schedule_id: scheduleId })
 
-    return users
-  }
+  async getSchedules(userId: string): Promise<Schedule[]> {
+    const schedules = await this.scheduleService.getUserSchedules(userId)
 
-  // async findByScheduleId(scheduleId: string): Promise<User> {
-  //   const user = this.usersRepository.findOneOrFail({
-  //     schedules:
-  //   })
-  // }
-
-  async addUserToSchedule(userId: string): Promise<User> {
-    const user = await this.usersRepository.findOneOrFail({ id: userId })
-
-    return this.usersRepository.save(user)
+    return schedules
   }
 }

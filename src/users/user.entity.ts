@@ -7,6 +7,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
@@ -38,17 +39,9 @@ export class User {
   @Field({ nullable: true })
   socket_id?: string
 
-  @Column({ nullable: true })
-  @Field({ nullable: true })
-  schedule_id?: string
 
-  @OneToOne(() => Schedule, schedule => schedule.owner)
+  @OneToMany(() => Schedule, schedule => schedule.owner)
   @Field(type => [Schedule])
-  @JoinColumn()
   schedules?: Schedule[]
 
-  // @ManyToMany(() => Schedule, schedule => schedule.participants)
-  // @JoinTable()
-  // @Field(type => [Schedule], { nullable: true })
-  // schedules: Schedule[]
 }

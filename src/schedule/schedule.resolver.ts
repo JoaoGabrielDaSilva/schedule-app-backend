@@ -17,12 +17,11 @@ import { ScheduleService } from './schedule.service'
 export class ScheduleResolver {
   constructor(
     private scheduleService: ScheduleService,
-    private usersService: UsersService
   ) {}
 
   @Query(returns => [Schedule])
   schedules() {
-    return this.scheduleService.listAllSchedules()
+    return this.scheduleService.getSchedules()
   }
 
   @Query(returns => Schedule)
@@ -36,7 +35,7 @@ export class ScheduleResolver {
   }
 
   @ResolveField(returns => User)
-  owner(@Parent() schedule: Schedule): Promise<User | null> {
+  owner(@Parent() schedule: Schedule): Promise<User> {
     return this.scheduleService.getOwner(schedule?.owner?.id)
   }
 }
