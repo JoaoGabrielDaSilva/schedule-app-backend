@@ -9,15 +9,37 @@ type User {
   password: String!
   profile_picture: String
   socket_id: String
-  schedule_id: String
+  schedules: [Schedule!]!
 }
 
+type Schedule {
+  id: String!
+  title: String!
+  init_date: DateTime!
+  end_date: DateTime!
+  init_hour: String!
+  end_hour: String!
+  owner: User
+  owner_id: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Query {
-  getAllUsers: [User!]!
-  findOneUser(findUserInput: FindUserInput!): User!
+  users: [User!]!
+  user(findUserInput: FindUserInput!): User!
+  schedules: [Schedule!]!
+  schedule(input: FindScheduleInput!): Schedule!
 }
 
 input FindUserInput {
+  id: String!
+}
+
+input FindScheduleInput {
   id: String!
 }
 
@@ -25,6 +47,7 @@ type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   deleteUser(deleteUserInput: DeleteUserInput!): User!
+  createSchedule(input: CreateScheduleInput!): Schedule!
 }
 
 input CreateUserInput {
@@ -33,7 +56,6 @@ input CreateUserInput {
   password: String!
   profile_picture: String
   socket_id: String
-  schedule_id: String
 }
 
 input UpdateUserInput {
@@ -42,9 +64,18 @@ input UpdateUserInput {
   email: String
   profile_picture: String
   socket_id: String
-  schedule_id: String
 }
 
 input DeleteUserInput {
   id: String!
+}
+
+input CreateScheduleInput {
+  title: String!
+  init_date: DateTime!
+  end_date: DateTime!
+  init_hour: String!
+  end_hour: String!
+  participants_ids: [String!]
+  owner_id: String
 }
