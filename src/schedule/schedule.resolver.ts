@@ -38,4 +38,12 @@ export class ScheduleResolver {
   owner(@Parent() schedule: Schedule): Promise<User> {
     return this.scheduleService.getOwner(schedule?.owner?.id)
   }
+
+  @ResolveField(returns => [User])
+  participants(@Parent() schedule: Schedule): Promise<User[]> {
+    console.log(schedule);
+    
+    return this.scheduleService.getParticipants(schedule.id)
+  }
+
 }

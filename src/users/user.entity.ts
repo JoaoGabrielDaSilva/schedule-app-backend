@@ -39,9 +39,11 @@ export class User {
   @Field({ nullable: true })
   socket_id?: string
 
-
   @OneToMany(() => Schedule, schedule => schedule.owner)
   @Field(type => [Schedule])
   schedules?: Schedule[]
 
+  // @ManyToOne(() => Schedule, schedule => schedule.participants)
+  // @Field(type => Schedule)
+  // schedules: Schedule[]
 }

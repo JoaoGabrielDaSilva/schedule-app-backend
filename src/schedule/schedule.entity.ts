@@ -2,14 +2,11 @@ import { Field, ObjectType } from '@nestjs/graphql'
 import { User } from 'src/users/user.entity'
 import {
   Column,
-  Connection,
   Entity,
-  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
 
@@ -48,8 +45,15 @@ export class Schedule {
   @Column({ nullable: true })
   owner_id: string
 
-  // @ManyToMany(() => User, user => user.schedules)
-  // @Field(type => [String])
-  // @JoinTable()
-  // participants: string[]
+  @OneToMany(() => User, user => user.schedules)
+  @Field(type => [User], {nullable: true})
+  @JoinTable({
+    joinColumn: {
+      referencedColumnName: 'id'
+    },
+    inverseJoinColumn: {
+      referencedColumnName: 'id'
+    }
+  })
+  participants: User[]
 }

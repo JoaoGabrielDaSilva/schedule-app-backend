@@ -60,4 +60,13 @@ export class UsersService {
 
     return schedules
   }
+
+  async findParticipantsInASchedule(scheduleId: string): Promise<User[]> {
+    const participants = await this.usersRepository.createQueryBuilder('user')
+    .innerJoin('schedule.participants', 'participants')
+    .innerJoin('user.schedules', 'schedules')
+    .where('schedules.id = :id', {id: scheduleId}).getMany()
+  
+    return participants
+  }
 }

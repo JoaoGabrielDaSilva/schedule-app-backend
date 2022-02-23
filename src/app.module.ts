@@ -28,7 +28,8 @@ import { ScheduleService } from './schedule/schedule.service'
     }),
     UsersModule,
     ScheduleModule,
-    TypeOrmModule.forFeature([User, Schedule])
+    TypeOrmModule.forFeature([User, Schedule]),
+    
   ],
   controllers: [AppController],
   providers: [AppService]

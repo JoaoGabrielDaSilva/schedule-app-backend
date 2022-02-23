@@ -16,7 +16,7 @@ export class ScheduleService {
      private usersService: UsersService) {}
 
   async getSchedules(): Promise<Schedule[]> {
-    return this.schedulesRepository.find({ relations: ['owner'] })
+    return this.schedulesRepository.find({ relations: ['owner', 'participants'] })
   }
 
   async getSchedule(input: FindScheduleInput) {
@@ -40,5 +40,9 @@ export class ScheduleService {
 
   async getUserSchedules(userId: string): Promise<Schedule[]> {
     return this.schedulesRepository.find({where: {owner_id: userId}, relations:[ "owner"]})
+  }
+
+  async getParticipants(scheduleId: string): Promise<User[]> {
+    return this.usersService.findParticipantsInASchedule(scheduleId)
   }
 }

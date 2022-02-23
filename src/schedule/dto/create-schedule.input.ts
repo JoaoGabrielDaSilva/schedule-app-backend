@@ -25,4 +25,5 @@ export class CreateScheduleInput {
 
   @Field({ nullable: true })
   owner_id?: string
+
 }

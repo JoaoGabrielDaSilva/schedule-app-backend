@@ -21,6 +21,7 @@ type Schedule {
   end_hour: String!
   owner: User
   owner_id: String
+  participants: [User!]
 }
 
 """
