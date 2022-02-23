@@ -9,7 +9,7 @@ type User {
   password: String!
   profile_picture: String
   socket_id: String
-  schedules: [Schedule!]!
+  schedules: [Schedule!]
 }
 
 type Schedule {

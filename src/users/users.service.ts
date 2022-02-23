@@ -1,4 +1,10 @@
-import { ConsoleLogger, forwardRef, Inject, Injectable, Logger } from '@nestjs/common'
+import {
+  ConsoleLogger,
+  forwardRef,
+  Inject,
+  Injectable,
+  Logger
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Schedule } from 'src/schedule/schedule.entity'
 import { ScheduleService } from 'src/schedule/schedule.service'
@@ -54,7 +60,6 @@ export class UsersService {
     return user
   }
 
-
   async getSchedules(userId: string): Promise<Schedule[]> {
     const schedules = await this.scheduleService.getUserSchedules(userId)
 
@@ -62,11 +67,18 @@ export class UsersService {
   }
 
   async findParticipantsInASchedule(scheduleId: string): Promise<User[]> {
-    const participants = await this.usersRepository.createQueryBuilder('user')
-    .innerJoin('schedule.participants', 'participants')
-    .innerJoin('user.schedules', 'schedules')
-    .where('schedules.id = :id', {id: scheduleId}).getMany()
-  
+    const participants = await this.usersRepository
+      .createQueryBuilder('u')
+      .innerJoinAndSelect('u.schedules', 's')
+      .innerJoinAndSelect('user_schedules', 'us')
+      .where('s.id = :id', { id: scheduleId })
+      .andWhere('us.schedule_id = s.id')
+      .andWhere('us.user_id = u.id')
+
+      .getMany()
+
+    console.log(participants)
+
     return participants
   }
 }

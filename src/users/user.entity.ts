@@ -39,8 +39,19 @@ export class User {
   @Field({ nullable: true })
   socket_id?: string
 
-  @OneToMany(() => Schedule, schedule => schedule.owner)
-  @Field(type => [Schedule])
+  @ManyToMany(() => Schedule, schedule => schedule.owner)
+  @Field(type => [Schedule], { nullable: true })
+  @JoinTable({
+    name: 'user_schedules',
+    joinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id'
+    },
+    inverseJoinColumn: {
+      name: 'schedule_id',
+      referencedColumnName: 'id'
+    }
+  })
   schedules?: Schedule[]
 
   // @ManyToOne(() => Schedule, schedule => schedule.participants)

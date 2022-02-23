@@ -15,9 +15,7 @@ import { ScheduleService } from './schedule.service'
 
 @Resolver(of => Schedule)
 export class ScheduleResolver {
-  constructor(
-    private scheduleService: ScheduleService,
-  ) {}
+  constructor(private scheduleService: ScheduleService) {}
 
   @Query(returns => [Schedule])
   schedules() {
@@ -41,9 +39,6 @@ export class ScheduleResolver {
 
   @ResolveField(returns => [User])
   participants(@Parent() schedule: Schedule): Promise<User[]> {
-    console.log(schedule);
-    
     return this.scheduleService.getParticipants(schedule.id)
   }
-
 }

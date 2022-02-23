@@ -38,7 +38,7 @@ export class Schedule {
   end_hour: string
 
   @ManyToOne(() => User, user => user.schedules)
-  @Field(() => User, {nullable: true})
+  @Field(() => User, { nullable: true })
   owner: User
 
   @Field({ nullable: true })
@@ -46,14 +46,6 @@ export class Schedule {
   owner_id: string
 
   @OneToMany(() => User, user => user.schedules)
-  @Field(type => [User], {nullable: true})
-  @JoinTable({
-    joinColumn: {
-      referencedColumnName: 'id'
-    },
-    inverseJoinColumn: {
-      referencedColumnName: 'id'
-    }
-  })
-  participants: User[]
+  @Field(type => [User], { nullable: true })
+  participants?: User[]
 }
